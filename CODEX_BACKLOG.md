@@ -1,4 +1,15 @@
+# Completion Target
+
+PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE
+
+# Current Completion Blockers
+
+- Execute MLflow-backed models, integrity/evaluation, local serving, real canary/shadow, and promotion.
+- Demonstrate bad-quality/latency rollback plus protected approval and stale-release denial.
+
 # P0 — Required for Portfolio Claim
+
+P0 blocks PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE; do not select P1/P2 work first.
 
 - Start local MLflow registry and register two tiny model artifacts with digest/lineage/schema.
 - Run deterministic champion/challenger evaluation against real data fixtures.
