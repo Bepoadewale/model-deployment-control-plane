@@ -19,3 +19,11 @@
 - **PARTIALLY VALIDATED:** meaningful registry/evaluation integration runs but core delivery is incomplete.
 - **LOCAL END-TO-END VALIDATED:** primary release path works with material failure/recovery/observability gaps.
 - **PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE:** every checked gate is executed; no production rollout claim is inferred.
+
+# Clean-Room Reproducibility Gate
+
+`PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE` requires two executed clean-room cycles: clone → install → bootstrap MLflow, fixture models, registry, serving → smoke → evaluation/champion-candidate/good-promotion demo → bad-model rollback demo → validation → project-scoped cleanup → second clean bootstrap/demo. Planned commands: `make install`, `make bootstrap-local`, `make smoke`, `make demo-release`, `make demo-rollback`, `make verify`, `make clean-local`.
+
+- [ ] Clean clone/bootstrap has no hidden state; primary and failure demos pass.
+- [ ] Cleanup removes only this project and unrelated resources survive.
+- [ ] Post-cleanup absence and second bootstrap/demo are recorded in `docs/VALIDATION.md`.
