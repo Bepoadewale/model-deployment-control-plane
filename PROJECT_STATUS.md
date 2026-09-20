@@ -4,6 +4,10 @@
 
 FOUNDATION
 
+## Maturity Model
+
+`FOUNDATION` → `PARTIALLY VALIDATED` → `LOCAL END-TO-END VALIDATED` → `PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE`.
+
 ## Executed and Verified
 
 - In-memory provenance, slice/latency gates, approval/promotion and rollback decision tests.
@@ -27,6 +31,15 @@ FOUNDATION
 ## Current P0 Objective
 
 Register and evaluate tiny real models in a local MLflow-backed release path.
+
+## Completion Blockers
+
+- Local MLflow, real artifacts/models, integrity, evaluation, serving, shadow/canary, and promotion are unexecuted.
+- Quality/latency rollback, approval/stale release controls, and release observability need live evidence.
+
+## Explicitly Unexecuted Production Adapters
+
+- Argo Rollouts, production registry, production multi-region serving, and cloud deployment targets.
 
 ## Last Validation
 
