@@ -49,3 +49,12 @@ Register and evaluate tiny real models in a local MLflow-backed release path.
 ## Last Updated
 
 2026-09-19, baseline `c22ee5a`.
+
+## Clean-Room Reproducibility
+
+**Status: NOT YET VALIDATED**
+
+Completion requires two executed clean-room cycles: clean start → bootstrap → smoke → primary demo
+→ failure/security demo → validation → project-scoped cleanup, followed by a second clean bootstrap
+and demo. Existing developer state is not evidence. This status must be `VALIDATED` before
+`PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE` is allowed.
