@@ -1,6 +1,7 @@
 SHELL := /usr/bin/env bash
 VENV := .venv
 PYTHON := $(VENV)/bin/python
+COMPOSE := LOCAL_UID=$$(id -u) LOCAL_GID=$$(id -g) docker compose
 
 .PHONY: install bootstrap-local smoke demo-release demo-rollback demo-tamper demo-recovery demo-stale verify status clean-local
 
@@ -14,10 +15,10 @@ install:
 
 bootstrap-local: install
 	mkdir -p .local/mlflow
-	docker compose up -d mlflow release-api
+	$(COMPOSE) up -d mlflow release-api
 	./scripts/wait-for-url.sh http://localhost:15000/health "MLflow"
 	MLFLOW_TRACKING_URI=http://localhost:15000 $(PYTHON) scripts/register_models.py
-	docker compose up -d runtime-champion runtime-good runtime-good-v2 runtime-quality-bad runtime-slow prometheus
+	$(COMPOSE) up -d runtime-champion runtime-good runtime-good-v2 runtime-quality-bad runtime-slow prometheus
 	$(MAKE) smoke
 
 smoke:
@@ -43,10 +44,10 @@ verify: install
 	$(PYTHON) -m pytest -q
 
 status:
-	docker compose ps
+	$(COMPOSE) ps
 	curl -fsS http://localhost:15080/healthz
 	curl -fsS http://localhost:15000/health
 
 clean-local:
-	docker compose down --volumes --remove-orphans
+	$(COMPOSE) down --volumes --remove-orphans
 	rm -rf .local $(VENV)

@@ -31,7 +31,7 @@ Date: 2026-09-24
 Working branch: `codex/week-05-model-deployment-control-plane`
 Environment: macOS on Apple Silicon, Python 3.12.12, Docker Compose v2.40.3-desktop.1, MLflow 3.16.1.
 
-Starting state: `make clean-local` removed only the `model-deployment-control-plane` Compose stack, its network/volumes, `.local` state and `.venv`. No shared Docker prune or Kubernetes deletion was used.
+Starting state: `make clean-local` removed only the `model-deployment-control-plane` Compose stack, its network/volumes, `.local` state and `.venv`. Bootstrap passes the invoking UID/GID to MLflow so CI cleanup can remove generated artifacts without privileged deletion. No shared Docker prune or Kubernetes deletion was used.
 
 First clean-room acceptance execution:
 
