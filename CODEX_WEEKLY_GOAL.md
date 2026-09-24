@@ -1,5 +1,5 @@
 # Week 5 Goal — Model Deployment Control Plane
 
-Starting maturity: FOUNDATION. Target: attempt to reach PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE without false promotion. Outcome: tiny real models pass through local registry, evaluation and a local promotion/rollback delivery demonstration. Required failure: a candidate with a quality or latency regression is not promoted and prior version remains active. Record blockers if unfinished.
+Starting maturity: FOUNDATION. Outcome: **PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE** reached with tiny real models moving through a local MLflow registry, integrity checks, evaluation, deterministic canary, exact-plan approval, promotion and rollback. Required failures executed: quality/latency regression, tampering, stale plan and restart recovery.
 
-Clean-room objective: the weekly target is not merely a working current environment; it is an attempted `PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE` outcome with clean bootstrap, demos, validation, safe teardown, and second bootstrap. Record blockers truthfully if unfinished.
+Clean-room evidence: two clean-room cycles completed, including project-scoped cleanup and a second bootstrap/release demo. See `docs/VALIDATION.md`; cloud/GPU/Kubernetes adapters remain explicitly unexecuted.

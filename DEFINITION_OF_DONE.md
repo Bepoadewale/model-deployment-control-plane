@@ -1,29 +1,26 @@
 # Definition of Done
 
-# Portfolio Complete — Local-First Scope Gate
+## Portfolio Complete — Local-First Scope Gate
 
-- [ ] Local MLflow server registers actual lightweight model artifacts with digest, lineage, aliases/tags, and schema/signature where claimed.
-- [ ] Champion/challenger evaluation uses real deterministic fixture models/data with aggregate and slice regression evidence.
-- [ ] Champion and candidate serve locally; claimed shadow or weighted canary traffic actually reaches the candidate.
-- [ ] A good candidate is promoted to champion through the real release path.
-- [ ] A system-healthy but quality-bad candidate is rejected/rolled back; latency regression is also executed if claimed.
-- [ ] Tampered artifact is rejected before delivery.
-- [ ] Protected promotion approval binds exact release/action; stale release plan and self/unauthorized approval are denied.
-- [ ] Release/model metrics or audit evidence run where claimed.
-- [ ] Reproducible registry → integrity → evaluation → delivery → online evidence → promote/rollback demo, meaningful tests, and green CI exist.
-- [ ] README/status distinguish real local models from unexecuted production registry/Argo/cloud adapters.
+- [x] Local MLflow server registers lightweight model artifacts with digest, lineage, aliases/tags and signature metadata.
+- [x] Champion/challenger evaluation uses real deterministic fixture models/data with aggregate and critical-slice evidence.
+- [x] Champion and candidates serve in independent local processes; deterministic canary traffic reaches the candidate.
+- [x] A good candidate is promoted to champion through the real release path.
+- [x] Healthy quality-bad and latency-regressed candidates are rejected/rolled back without changing the champion.
+- [x] A tampered artifact is rejected before delivery.
+- [x] Exact-plan independent approval and self/unauthorized approval denial execute; a live stale-release demo rejects an older approved plan after a newer champion promotion.
+- [x] Persistent audit/release state and Prometheus release/runtime metrics execute locally.
+- [x] Meaningful unit tests and a Docker E2E CI job exist.
+- [x] README/status distinguish real local models from unexecuted production adapters.
 
-## Maturity Levels
+## Clean-Room Reproducibility Gate
 
-- **FOUNDATION:** release decision logic exists.
-- **PARTIALLY VALIDATED:** meaningful registry/evaluation integration runs but core delivery is incomplete.
-- **LOCAL END-TO-END VALIDATED:** primary release path works with material failure/recovery/observability gaps.
-- **PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE:** every checked gate is executed; no production rollout claim is inferred.
+- [x] Clean project state → bootstrap → smoke → successful release demo executed.
+- [x] Important failure/security demos (quality/latency rollback and tamper rejection) executed.
+- [x] Project-scoped cleanup removed only this project's Compose resources, `.local` and `.venv`.
+- [x] Second clean bootstrap and successful release demo executed.
+- [x] `docs/VALIDATION.md` and README commands reflect executed evidence.
 
-# Clean-Room Reproducibility Gate
+## Explicit boundary
 
-`PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE` requires two executed clean-room cycles: clone → install → bootstrap MLflow, fixture models, registry, serving → smoke → evaluation/champion-candidate/good-promotion demo → bad-model rollback demo → validation → project-scoped cleanup → second clean bootstrap/demo. Planned commands: `make install`, `make bootstrap-local`, `make smoke`, `make demo-release`, `make demo-rollback`, `make verify`, `make clean-local`.
-
-- [ ] Clean clone/bootstrap has no hidden state; primary and failure demos pass.
-- [ ] Cleanup removes only this project and unrelated resources survive.
-- [ ] Post-cleanup absence and second bootstrap/demo are recorded in `docs/VALIDATION.md`.
+This completion level validates the local release-control architecture. It does not claim real GPU serving, Kubernetes/Argo delivery, a managed model registry, enterprise identity or cloud production validation.

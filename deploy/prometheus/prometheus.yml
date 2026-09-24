@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 2s
+scrape_configs:
+  - job_name: release-api
+    static_configs: [{targets: ["release-api:8080"]}]
+  - job_name: fixture-runtimes
+    static_configs:
+      - targets:
+          ["runtime-champion:8101", "runtime-good:8102", "runtime-good-v2:8105", "runtime-quality-bad:8103", "runtime-slow:8104"]
