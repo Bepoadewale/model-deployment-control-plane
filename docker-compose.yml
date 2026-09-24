@@ -1,0 +1,110 @@
+name: model-deployment-control-plane
+
+services:
+  mlflow:
+    build: .
+    # Bootstrap supplies the invoking developer's UID/GID. This keeps MLflow
+    # artifacts removable by project-scoped cleanup on Linux CI runners.
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    command: >-
+      mlflow server --host 0.0.0.0 --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --serve-artifacts --artifacts-destination /mlflow/artifacts --allowed-hosts "*"
+    volumes:
+      - ./.local/mlflow:/mlflow
+    ports:
+      - "15000:5000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health', timeout=2)"]
+      interval: 3s
+      timeout: 2s
+      retries: 30
+
+  release-api:
+    build: .
+    command: uvicorn modelcp.api:app --host 0.0.0.0 --port 8080
+    environment:
+      PYTHONPATH: /app/control-plane/src
+      JWT_SECRET: local-release-secret-for-model-control-plane-2026
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      RELEASE_DB: /state/releases.db
+      MODEL_REGISTRY_PATH: /state/models/registry.json
+      EVALUATION_FIXTURE: /app/fixtures/evaluation.json
+      RUNTIME_CHAMPION_URL: http://runtime-champion:8101
+      RUNTIME_GOOD_URL: http://runtime-good:8102
+      RUNTIME_GOOD_V2_URL: http://runtime-good-v2:8105
+      RUNTIME_QUALITY_BAD_URL: http://runtime-quality-bad:8103
+      RUNTIME_SLOW_URL: http://runtime-slow:8104
+    volumes:
+      - ./.local:/state
+      - ./control-plane/src:/app/control-plane/src:ro
+    ports:
+      - "15080:8080"
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/healthz', timeout=2)"]
+      interval: 3s
+      timeout: 2s
+      retries: 30
+
+  runtime-champion:
+    build: .
+    command: uvicorn modelcp.runtime:app --host 0.0.0.0 --port 8101
+    environment:
+      MODEL_PATH: /state/models/champion/model.joblib
+      MODEL_NAME: risk-classifier
+      MODEL_VERSION: champion
+    volumes: ["./.local:/state:ro"]
+    ports: ["15101:8101"]
+
+  runtime-good:
+    build: .
+    command: uvicorn modelcp.runtime:app --host 0.0.0.0 --port 8102
+    environment:
+      MODEL_PATH: /state/models/candidate-good/model.joblib
+      MODEL_NAME: risk-classifier
+      MODEL_VERSION: candidate-good
+    volumes: ["./.local:/state:ro"]
+    ports: ["15102:8102"]
+
+  runtime-good-v2:
+    build: .
+    command: uvicorn modelcp.runtime:app --host 0.0.0.0 --port 8105
+    environment:
+      MODEL_PATH: /state/models/candidate-good-v2/model.joblib
+      MODEL_NAME: risk-classifier
+      MODEL_VERSION: candidate-good-v2
+    volumes: ["./.local:/state:ro"]
+    ports: ["15105:8105"]
+
+  runtime-quality-bad:
+    build: .
+    command: uvicorn modelcp.runtime:app --host 0.0.0.0 --port 8103
+    environment:
+      MODEL_PATH: /state/models/quality-bad/model.joblib
+      MODEL_NAME: risk-classifier
+      MODEL_VERSION: quality-bad
+    volumes: ["./.local:/state:ro"]
+    ports: ["15103:8103"]
+
+  runtime-slow:
+    build: .
+    command: uvicorn modelcp.runtime:app --host 0.0.0.0 --port 8104
+    environment:
+      MODEL_PATH: /state/models/slow/model.joblib
+      MODEL_NAME: risk-classifier
+      MODEL_VERSION: slow
+      MODEL_DELAY_MS: "700"
+    volumes: ["./.local:/state:ro"]
+    ports: ["15104:8104"]
+
+  prometheus:
+    image: prom/prometheus:v3.7.3
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports: ["15091:9090"]
+    depends_on:
+      release-api:
+        condition: service_healthy

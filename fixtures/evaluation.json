@@ -1,0 +1,10 @@
+[
+  {"id": "a-1", "features": [0.0, 0.0], "label": 0, "slice": "region-a"},
+  {"id": "a-2", "features": [0.0, 1.0], "label": 0, "slice": "region-a"},
+  {"id": "a-3", "features": [1.0, 0.0], "label": 0, "slice": "region-a"},
+  {"id": "a-4", "features": [1.0, 1.0], "label": 1, "slice": "region-a"},
+  {"id": "b-1", "features": [0.0, 0.0], "label": 0, "slice": "region-b"},
+  {"id": "b-2", "features": [0.0, 1.0], "label": 0, "slice": "region-b"},
+  {"id": "b-3", "features": [1.0, 0.0], "label": 0, "slice": "region-b"},
+  {"id": "b-4", "features": [1.0, 1.0], "label": 1, "slice": "region-b"}
+]

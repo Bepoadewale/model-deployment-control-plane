@@ -1,11 +1,39 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name="model-deployment-control-plane"
-version="0.1.0"
-requires-python=">=3.12"
+name = "model-deployment-control-plane"
+version = "0.2.0"
+description = "A local-first governed model release control plane"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "httpx>=0.28,<1",
+  "joblib>=1.4,<2",
+  "mlflow>=3.0,<4",
+  "prometheus-client>=0.21,<1",
+  "PyJWT>=2.10,<3",
+  "scikit-learn>=1.6,<2",
+  "uvicorn[standard]>=0.34,<1",
+]
+
 [project.optional-dependencies]
-dev=["pytest>=8.3,<9","ruff>=0.8,<1"]
+dev = ["pytest>=8.3,<9", "ruff>=0.8,<1"]
+
+[tool.setuptools]
+package-dir = {"" = "control-plane/src"}
+
+[tool.setuptools.packages.find]
+where = ["control-plane/src"]
+
 [tool.pytest.ini_options]
-pythonpath=["control-plane/src"]
+pythonpath = ["control-plane/src"]
+testpaths = ["tests"]
+
 [tool.ruff]
-line-length=100
-target-version="py312"
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = ["B008"] # FastAPI dependency declarations intentionally use Depends(...).

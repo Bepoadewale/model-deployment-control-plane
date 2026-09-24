@@ -4,30 +4,25 @@ PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE
 
 # Current Completion Blockers
 
-- Execute MLflow-backed models, integrity/evaluation, local serving, real canary/shadow, and promotion.
-- Demonstrate bad-quality/latency rollback plus protected approval and stale-release denial.
+None for the local-first scope. Preserve clean-room validation when changing the stack.
 
 # P0 — Required for Portfolio Claim
 
-P0 blocks PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE; do not select P1/P2 work first.
-
-- Start local MLflow registry and register two tiny model artifacts with digest/lineage/schema.
-- Run deterministic champion/challenger evaluation against real data fixtures.
-- Deploy champion/candidate locally and implement shadow or weighted canary route.
-- Measure quality/latency gates; promote a good candidate.
-- Exercise quality or latency regression rollback and verify prior model restored.
+- [x] Pass the full clean-room reproducibility gate: deterministic bootstrap, smoke, release/failure/recovery demos, safe cleanup and second bootstrap.
+- [x] Run local MLflow registry, real artifacts, real serving, promotion and rollback gates.
 
 # P1 — Production Hardening
 
-- Persistent release state, approval/audit API, reproducible model packaging and alerting.
+- Add stronger multi-approver policy and approval expiry.
+- Replace local shared-secret fixture identities with OIDC/JWKS integration.
+- Add durable metrics retention and alert rules.
+- Add a container image supply-chain attestation/SBOM for serving artifacts.
 
 # P2 — Enhancements
 
-- UI/CLI and richer evaluation-slice reporting.
+- Add a release CLI/UI and richer slice-evaluation reporting.
+- Add configurable canary cohorts and bounded online sample windows.
 
 # P3 — Future / Cloud / Hardware
 
-- Argo Rollouts, production registry and multi-region serving.
-# Clean-Room Completion Blocker
-
-- [ ] Pass the full clean-room reproducibility gate: deterministic bootstrap, smoke, release and rollback demos, safe cleanup, a second clean bootstrap, and recorded evidence. Break this into focused P0 work only during the scheduled week.
+- Kubernetes + Argo Rollouts delivery, managed MLflow/object registry, GPU/vLLM/DCGM and multi-region serving.
