@@ -2,7 +2,7 @@
 
 | Capability | Status | Validation |
 | --- | --- | --- |
-| Local MLflow tracking + registry | ✅ EXECUTED LOCALLY | `make bootstrap-local` |
+| Local MLflow tracking + registry | ✅ EXECUTED LOCALLY | `make bootstrap-local`; parameters and real fixture metrics logged per run |
 | Real sklearn model artifacts | ✅ EXECUTED LOCALLY | MLflow registrations and runtime `/healthz` |
 | Artifact SHA-256 verification | ✅ EXECUTED LOCALLY | `make demo-tamper` |
 | Offline aggregate and critical-slice gates | ✅ EXECUTED LOCALLY | `make demo-rollback` |

@@ -54,6 +54,30 @@ def make_model(variant: str):
     return LogisticRegression(C=regularization, random_state=7, max_iter=500).fit(features, labels)
 
 
+def evaluate_fixture(model, data: list[dict[str, object]]) -> dict[str, float]:
+    """Calculate the MLflow run metrics from the real local evaluation fixture."""
+    features = [row["features"] for row in data]
+    started = time.perf_counter()
+    predictions = model.predict(features)
+    elapsed_ms = (time.perf_counter() - started) * 1000
+    labels = [int(row["label"]) for row in data]
+    accuracy = sum(int(actual == prediction) for actual, prediction in zip(labels, predictions)) / len(
+        labels
+    )
+    region_b = [
+        (int(row["label"]), int(prediction))
+        for row, prediction in zip(data, predictions)
+        if row["slice"] == "region-b"
+    ]
+    positives = [(actual, prediction) for actual, prediction in region_b if actual == 1]
+    recall = sum(int(prediction == 1) for _, prediction in positives) / len(positives)
+    return {
+        "fixture_accuracy": accuracy,
+        "region_b_recall": recall,
+        "fixture_batch_inference_ms": elapsed_ms,
+    }
+
+
 def register(variant: str, delay_ms: int) -> dict[str, object]:
     print(f"registering {variant}", flush=True)
     model = make_model(variant)
@@ -67,6 +91,8 @@ def register(variant: str, delay_ms: int) -> dict[str, object]:
     sample = [row["features"] for row in data]
     predictions = model.predict(sample)
     signature = infer_signature(sample, predictions)
+    evaluation = evaluate_fixture(model, data)
+    model_parameters = model.get_params()
 
     with mlflow.start_run(run_name=f"bootstrap-{variant}") as run:
         print(f"logging {variant}", flush=True)
@@ -76,6 +102,24 @@ def register(variant: str, delay_ms: int) -> dict[str, object]:
                 "source.git_commit": "local-fixture",
                 "data.digest": fixture_digest,
                 "artifact.sha256": artifact_digest,
+            }
+        )
+        mlflow.log_params(
+            {
+                "variant": variant,
+                "model_type": type(model).__name__,
+                "feature_count": len(sample[0]),
+                "fixture_rows": len(data),
+                "training_rows": 16,
+                "regularization_c": model_parameters.get("C", "not-applicable"),
+                "max_iterations": model_parameters.get("max_iter", "not-applicable"),
+                "configured_runtime_delay_ms": delay_ms,
+            }
+        )
+        mlflow.log_metrics(
+            {
+                **evaluation,
+                "artifact_size_bytes": float(artifact.stat().st_size),
             }
         )
         mlflow.log_artifact(str(artifact), artifact_path="serving")

@@ -20,7 +20,7 @@ MLflow registry → digest/provenance → real offline evaluation → determinis
 
 | Capability | Status | Evidence |
 | --- | --- | --- |
-| MLflow registry, versions, tags and champion alias | ✅ Executed locally | `make bootstrap-local` |
+| MLflow registry, versions, tags, real fixture metrics and champion alias | ✅ Executed locally | `make bootstrap-local` |
 | Deterministic scikit-learn models and HTTP serving | ✅ Executed locally | five FastAPI runtime containers |
 | Digest verification and tamper rejection | ✅ Executed locally | `make demo-tamper` |
 | Offline aggregate/slice evaluation | ✅ Executed locally | `make demo-rollback` |
