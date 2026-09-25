@@ -10,7 +10,7 @@ MLflow registry → digest/provenance → real offline evaluation → determinis
 
 ## What it allows—and prevents
 
-- A developer can submit an approved candidate for a production release plan.
+- A developer can submit a candidate for a production release plan.
 - A separate approver must approve the exact immutable plan hash before promotion.
 - The requester cannot approve their own release; agents cannot autonomously create a production release.
 - The control plane rejects a modified artifact before evaluation, rejects a system-healthy model with poor quality, and rolls back a slow canary without changing the champion.
@@ -20,7 +20,7 @@ MLflow registry → digest/provenance → real offline evaluation → determinis
 
 | Capability | Status | Evidence |
 | --- | --- | --- |
-| MLflow registry, versions, tags, real fixture metrics and champion alias | ✅ Executed locally | `make bootstrap-local` |
+| MLflow registry, versions, tags, model schema signature, real fixture metrics and champion alias | ✅ Executed locally | `make bootstrap-local` |
 | Deterministic scikit-learn models and HTTP serving | ✅ Executed locally | five FastAPI runtime containers |
 | Digest verification and tamper rejection | ✅ Executed locally | `make demo-tamper` |
 | Offline aggregate/slice evaluation | ✅ Executed locally | `make demo-rollback` |
