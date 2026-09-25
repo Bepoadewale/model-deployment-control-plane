@@ -6,7 +6,7 @@ PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE
 
 ## Executed and Verified
 
-- Local MLflow tracking server and registry registered five real deterministic sklearn model versions with MLflow run IDs, tags, artifacts, signatures and a `champion` alias.
+- Local MLflow tracking server and registry registered five real deterministic sklearn model versions with MLflow run IDs, tags, artifacts, input/output model signatures and a `champion` alias.
 - Five independently running FastAPI model runtimes performed real CPU inference.
 - A release API persisted release plans, exact approvals and hash-linked audit events in SQLite.
 - A good candidate completed offline aggregate/slice gates, deterministic 10% canary traffic, independent exact-plan approval and MLflow alias promotion.
@@ -50,7 +50,7 @@ PORTFOLIO COMPLETE — LOCAL-FIRST SCOPE
 
 ## Last Updated
 
-2026-09-24, Week 5 working branch.
+2026-09-25, post-merge documentation audit.
 
 ## Clean-Room Reproducibility
 
