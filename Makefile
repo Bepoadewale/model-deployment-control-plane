@@ -3,11 +3,13 @@ VENV := .venv
 PYTHON := $(VENV)/bin/python
 COMPOSE := LOCAL_UID=$$(id -u) LOCAL_GID=$$(id -g) docker compose
 
-.PHONY: install bootstrap-local smoke demo-release demo-rollback demo-tamper demo-recovery demo-stale verify status clean-local
+.PHONY: install bootstrap-local smoke demo-release demo-rollback demo-tamper demo-recovery demo-stale verify status clean-local public-demo
 
 install:
 	@if ! test -x $(PYTHON) || ! $(PYTHON) -c 'import mlflow, pytest, ruff' >/dev/null 2>&1; then \
 		rm -rf $(VENV); \
+		if test -e $(VENV); then sleep 1; rm -rf $(VENV); fi; \
+		test ! -e $(VENV) || { echo "could not remove stale $(VENV); stop processes using it and retry" >&2; exit 1; }; \
 		python3.12 -m venv $(VENV); \
 		$(PYTHON) -m pip install --disable-pip-version-check --quiet --upgrade pip; \
 		$(PYTHON) -m pip install --disable-pip-version-check --quiet -e '.[dev]'; \
@@ -51,3 +53,6 @@ status:
 clean-local:
 	$(COMPOSE) down --volumes --remove-orphans
 	rm -rf .local $(VENV)
+
+public-demo:
+	./scripts/start-public-demo.sh

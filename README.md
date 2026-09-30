@@ -50,6 +50,10 @@ make clean-local
 
 Local endpoints: MLflow `http://localhost:15000`, release API `http://localhost:15080/docs`, Prometheus `http://localhost:15091`.
 
+### Temporary public MLflow demo
+
+Run `make public-demo` to bootstrap the local model-release stack, execute a good release scenario, and print a temporary Cloudflare Quick Tunnel URL for MLflow. No Cloudflare account, named tunnel, or persistent credential is used. The URL is public, disposable, changes every run, and must never be committed; use it only for local fixture evidence. `Ctrl-C` stops only the tunnel; `make clean-local` removes project-owned resources.
+
 `make clean-local` removes only this Compose project, its `.local` state and its Python virtual environment; it does not prune shared Docker resources. See [validation evidence](docs/VALIDATION.md) and [implementation status](docs/IMPLEMENTATION_STATUS.md).
 
 ## Deliberate local fixture limits
